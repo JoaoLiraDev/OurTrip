@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -25,9 +26,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -145,7 +149,6 @@ fun LoginScreen(navController: NavController) {
                             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.primary_100))
                         ) {
                             Text(
-
                                 text = "Login",
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = QuickSand,
@@ -153,6 +156,19 @@ fun LoginScreen(navController: NavController) {
                                 fontSize = 23.sp
                             )
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        ClickableText(
+                            text = AnnotatedString(text = "Não tem conta? Cadastre-se!"),
+                            onClick = {navController.navigate("Registry")},
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = QuickSand,
+                                color = colorResource(id = R.color.primary_100),
+                                fontSize = 12.sp,
+                                textDecoration = TextDecoration.Underline
+                            )
+                        )
                     }
                 }
             }
