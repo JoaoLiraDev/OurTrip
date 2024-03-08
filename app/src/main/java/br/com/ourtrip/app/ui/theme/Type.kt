@@ -2,9 +2,14 @@ package br.com.ourtrip.app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import br.com.ourtrip.app.R
+
+val InriaSerif = FontFamily(Font(R.font.inria_serif_regular))
+val QuickSand = FontFamily(Font(R.font.quicksand_regular))
 
 // Set of Material typography styles to start with
 val Typography = Typography(
