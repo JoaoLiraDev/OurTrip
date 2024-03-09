@@ -34,10 +34,10 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = "Login",
                         enterTransition = {
-                            slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Start, animationSpec = tween(2000))
+                            slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Start, animationSpec = tween(600))
                         },
                         exitTransition = {
-                            slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(1000))
+                            slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(600))
                         }
                     ){
                         composable(route =  "Login") { LoginScreen(navController) }
