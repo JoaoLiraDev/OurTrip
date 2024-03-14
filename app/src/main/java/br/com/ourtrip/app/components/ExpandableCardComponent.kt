@@ -21,7 +21,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -35,18 +34,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.ourtrip.app.R
+import br.com.ourtrip.app.model.Destination
 import br.com.ourtrip.app.ui.theme.QuickSand
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 
 @Composable
-fun ExpandableCardComponent() {
+fun ExpandableCardComponent(destination: Destination) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -56,7 +58,12 @@ fun ExpandableCardComponent() {
     ) {
         Box(modifier = Modifier.height(200.dp)) {
             AsyncImage(
-                model = "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(destination.imageUrl)
+                    .networkCachePolicy(CachePolicy.ENABLED)
+                    .diskCachePolicy(CachePolicy.DISABLED)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .build(),
                 placeholder = painterResource(id = R.drawable.broken_image),
                 error = painterResource(id = R.drawable.broken_image),
                 contentDescription = null,
@@ -85,7 +92,7 @@ fun ExpandableCardComponent() {
                 .fillMaxSize(),
                 contentAlignment = Alignment.Center) {
                 Text(
-                    text = "Parque do Centro",
+                    text = destination.destinationName,
                     fontWeight = FontWeight.Bold,
                     fontFamily = QuickSand,
                     color = Color.White,
@@ -116,7 +123,7 @@ fun ExpandableCardComponent() {
 
                     Row (horizontalArrangement = Arrangement.SpaceBetween){
                         Text(
-                            text = "3.8",
+                            text = destination.starNumber,
                             fontWeight = FontWeight.Bold,
                             fontFamily = QuickSand,
                             color = Color.White,
@@ -134,7 +141,7 @@ fun ExpandableCardComponent() {
                     }
                     Box {
                         Text(
-                            text = "R$ 301.8",
+                            text = "R$ ${destination.destinationPrice}",
                             fontWeight = FontWeight.Bold,
                             fontFamily = QuickSand,
                             color = Color.White,
@@ -144,13 +151,13 @@ fun ExpandableCardComponent() {
                 }
             }
         }
-        CardContent(expanded)
+        CardContent(expanded, destination)
     }
     Spacer(modifier = Modifier.padding(5.dp))
 }
 
 @Composable
-fun CardContent(expanded: Boolean = false) {
+fun CardContent(expanded: Boolean = false, destination: Destination) {
     Row(
         modifier = Modifier
             .animateContentSize()
@@ -161,9 +168,9 @@ fun CardContent(expanded: Boolean = false) {
                     .weight(1f)
                     .padding(12.dp)
             ) {
-                Text(text = "Hello Word")
+                Text(text = destination.destinationName)
                 Spacer(modifier = Modifier.padding(5.dp))
-                Text(text = ("Content Card Description").repeat(5))
+                Text(text = destination.description)
 
                 Row(modifier = Modifier.fillMaxWidth().padding(top = 10.dp), horizontalArrangement = Arrangement.End) {
                     Button(
@@ -191,10 +198,4 @@ fun CardContent(expanded: Boolean = false) {
         }
 
     }
-}
-
-@Preview
-@Composable
-fun CardPrev() {
-    ExpandableCardComponent()
 }
