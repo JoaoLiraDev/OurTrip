@@ -40,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import br.com.ourtrip.app.R
 import br.com.ourtrip.app.model.Destination
 import br.com.ourtrip.app.ui.theme.QuickSand
@@ -48,7 +49,10 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 
 @Composable
-fun ExpandableCardComponent(destination: Destination) {
+fun ExpandableCardComponent(
+    destination: Destination,
+    navController: NavController
+) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -151,13 +155,17 @@ fun ExpandableCardComponent(destination: Destination) {
                 }
             }
         }
-        CardContent(expanded, destination)
+        CardContent(expanded, destination, navController)
     }
     Spacer(modifier = Modifier.padding(5.dp))
 }
 
 @Composable
-fun CardContent(expanded: Boolean = false, destination: Destination) {
+fun CardContent(
+    expanded: Boolean = false,
+    destination: Destination,
+    navController: NavController
+) {
     Row(
         modifier = Modifier
             .animateContentSize()
@@ -174,7 +182,7 @@ fun CardContent(expanded: Boolean = false, destination: Destination) {
 
                 Row(modifier = Modifier.fillMaxWidth().padding(top = 10.dp), horizontalArrangement = Arrangement.End) {
                     Button(
-                        onClick = {},
+                        onClick = { navController.navigate("Payment?destinationId=${destination.id}") },
                         modifier = Modifier,
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.primary_100)),

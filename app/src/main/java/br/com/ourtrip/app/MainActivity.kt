@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         composable(route =  "Recovery") { RecoveryScreen(navController) }
                         composable(route =  "Registry") { RegistryScreen(navController) }
                         composable(route =  "Destination-Search") { DestinationSearchScreen(navController) }
-                        composable(route =  "Payment") { PaymentScreen(navController) }
+                        composable(route =  "Payment") { PaymentScreen(navController, destinationId = null) }
                         composable(route =  "User-Feedback") { UserFeedbackScreen(navController) }
                     }
                 }

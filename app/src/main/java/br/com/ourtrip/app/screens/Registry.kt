@@ -1,6 +1,5 @@
 package br.com.ourtrip.app.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -18,7 +16,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -34,19 +31,13 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.ourtrip.app.R
-import br.com.ourtrip.app.ui.theme.InriaSerif
+import br.com.ourtrip.app.components.PasswordInputComponent
 import br.com.ourtrip.app.ui.theme.QuickSand
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -56,6 +47,18 @@ import java.util.TimeZone
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistryScreen(navController: NavController) {
+    var fullName by remember {
+        mutableStateOf("")
+    }
+    var email by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
+        mutableStateOf("")
+    }
+    var confirmPassword by remember {
+        mutableStateOf("")
+    }
     Box() {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -74,8 +77,8 @@ fun RegistryScreen(navController: NavController) {
                         )
                     ) {
                         OutlinedTextField(
-                            value = "",
-                            onValueChange = {},
+                            value = fullName,
+                            onValueChange = { fullName = it},
                             modifier = Modifier
                                 .fillMaxWidth(),
                             placeholder = {
@@ -155,8 +158,8 @@ fun RegistryScreen(navController: NavController) {
                         Spacer(modifier = Modifier.height(10.dp))
 
                         OutlinedTextField(
-                            value = "",
-                            onValueChange = {},
+                            value = email,
+                            onValueChange = {email = it},
                             modifier = Modifier
                                 .fillMaxWidth(),
                             placeholder = {
@@ -178,66 +181,17 @@ fun RegistryScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        OutlinedTextField(
-                            value = "",
-                            onValueChange = {},
-                            modifier = Modifier.fillMaxWidth(),
-                            placeholder = {
-                                Text(
-                                    text = "Senha",
-                                    fontFamily = QuickSand,
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 10.sp,
-                                    color = colorResource(id = R.color.primary_75)
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedBorderColor = colorResource(id = R.color.primary_50),
-                                focusedBorderColor = colorResource(id = R.color.primary_100)
-                            ),
-                            shape = RoundedCornerShape(16.dp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            trailingIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.visibility),
-                                    contentDescription = null
-                                )
-                            }
-                        )
+                        PasswordInputComponent(placeholder = "Senha", value = password, updateValue = { password = it })
+
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        OutlinedTextField(
-                            value = "",
-                            onValueChange = {},
-                            modifier = Modifier.fillMaxWidth(),
-                            placeholder = {
-                                Text(
-                                    text = "Confirmar Senha",
-                                    fontFamily = QuickSand,
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 10.sp,
-                                    color = colorResource(id = R.color.primary_75)
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedBorderColor = colorResource(id = R.color.primary_50),
-                                focusedBorderColor = colorResource(id = R.color.primary_100)
-                            ),
-                            shape = RoundedCornerShape(16.dp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            trailingIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.visibility),
-                                    contentDescription = null
-                                )
-                            }
-                        )
+                        PasswordInputComponent(placeholder = "Senha", value = confirmPassword, updateValue = { confirmPassword = it })
 
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Button(
-                            onClick = {},
+                            onClick = {navController.navigate("Login")},
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp),

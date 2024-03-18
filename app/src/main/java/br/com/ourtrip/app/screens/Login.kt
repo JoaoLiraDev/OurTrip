@@ -15,11 +15,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,11 +39,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.ourtrip.app.R
+import br.com.ourtrip.app.components.PasswordInputComponent
 import br.com.ourtrip.app.ui.theme.InriaSerif
 import br.com.ourtrip.app.ui.theme.QuickSand
 
 @Composable
 fun LoginScreen(navController: NavController) {
+
+    var email by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
+        mutableStateOf("")
+    }
+
     Box() {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -92,8 +104,8 @@ fun LoginScreen(navController: NavController) {
                             textAlign = TextAlign.Start
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        OutlinedTextField(value = "",
-                            onValueChange = {},
+                        OutlinedTextField(value = email,
+                            onValueChange = {email = it},
                             modifier = Modifier
                                 .fillMaxWidth(),
                             placeholder = {
@@ -115,30 +127,8 @@ fun LoginScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        OutlinedTextField(value = "",
-                            onValueChange = {},
-                            modifier = Modifier.fillMaxWidth(),
-                            placeholder = {
-                                Text(
-                                    text = "Senha",
-                                    fontFamily = QuickSand,
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 10.sp,
-                                    color = colorResource(id = R.color.primary_75)
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedBorderColor = colorResource(id = R.color.primary_50),
-                                focusedBorderColor = colorResource(id = R.color.primary_100)
-                            ),
-                            shape = RoundedCornerShape(16.dp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            trailingIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.visibility),
-                                    contentDescription = null
-                                )
-                            })
+                        PasswordInputComponent(placeholder = "Senha", value = password, updateValue = {password = it})
+
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
                             onClick = {navController.navigate("Destination-Search")},

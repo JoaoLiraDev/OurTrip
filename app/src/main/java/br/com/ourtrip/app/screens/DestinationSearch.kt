@@ -42,7 +42,7 @@ fun DestinationSearchScreen(navController: NavController) {
         if (isLoading) {
             LoadingAnimation()
         } else {
-            DestinationList(destinations = destinations)
+            DestinationList(destinations = destinations, navController = navController)
         }
     }
 }
@@ -50,11 +50,12 @@ fun DestinationSearchScreen(navController: NavController) {
 @Composable
 fun DestinationList(
     modifier: Modifier = Modifier,
+    navController: NavController,
     destinations: List<Destination>
 ) {
     LazyColumn(modifier = modifier.padding(vertical = 4.dp, horizontal = 6.dp)) {
         items(items = destinations) { destinations ->
-            ExpandableCardComponent(destinations)
+            ExpandableCardComponent(destinations, navController)
         }
     }
 }
