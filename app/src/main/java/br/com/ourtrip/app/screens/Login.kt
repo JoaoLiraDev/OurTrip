@@ -19,6 +19,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,14 +38,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.ourtrip.app.R
+import br.com.ourtrip.app.components.LoadingAnimation
 import br.com.ourtrip.app.components.PasswordInputComponent
+import br.com.ourtrip.app.model.LoginViewModel
+import br.com.ourtrip.app.model.UserViewModel
 import br.com.ourtrip.app.ui.theme.InriaSerif
 import br.com.ourtrip.app.ui.theme.QuickSand
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
+    val response by viewModel.response
+    val loading by viewModel.loading
 
     var email by remember {
         mutableStateOf("")
@@ -131,7 +138,7 @@ fun LoginScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
-                            onClick = {navController.navigate("Destination-Search")},
+                            onClick = {viewModel.login(email, password)},
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp),
@@ -159,6 +166,16 @@ fun LoginScreen(navController: NavController) {
                                 textDecoration = TextDecoration.Underline
                             )
                         )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(36.dp))
+            if (loading) {
+                LoadingAnimation()
+            } else {
+                response?.let {
+                    LaunchedEffect(it) {
+                        navController.navigate("Destination-Search")
                     }
                 }
             }

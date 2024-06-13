@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.ourtrip.app.R
-import br.com.ourtrip.app.model.Destination
+import br.com.ourtrip.app.network.destinations.Destinations
 import br.com.ourtrip.app.ui.theme.QuickSand
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
@@ -50,7 +50,7 @@ import coil.request.ImageRequest
 
 @Composable
 fun ExpandableCardComponent(
-    destination: Destination,
+    destination: Destinations,
     navController: NavController
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -96,7 +96,7 @@ fun ExpandableCardComponent(
                 .fillMaxSize(),
                 contentAlignment = Alignment.Center) {
                 Text(
-                    text = destination.destinationName,
+                    text = destination.name,
                     fontWeight = FontWeight.Bold,
                     fontFamily = QuickSand,
                     color = Color.White,
@@ -127,7 +127,7 @@ fun ExpandableCardComponent(
 
                     Row (horizontalArrangement = Arrangement.SpaceBetween){
                         Text(
-                            text = destination.starNumber,
+                            text = destination.stars,
                             fontWeight = FontWeight.Bold,
                             fontFamily = QuickSand,
                             color = Color.White,
@@ -145,7 +145,7 @@ fun ExpandableCardComponent(
                     }
                     Box {
                         Text(
-                            text = "R$ ${destination.destinationPrice}",
+                            text = "R$ ${destination.price}",
                             fontWeight = FontWeight.Bold,
                             fontFamily = QuickSand,
                             color = Color.White,
@@ -163,7 +163,7 @@ fun ExpandableCardComponent(
 @Composable
 fun CardContent(
     expanded: Boolean = false,
-    destination: Destination,
+    destination: Destinations,
     navController: NavController
 ) {
     Row(
@@ -176,7 +176,7 @@ fun CardContent(
                     .weight(1f)
                     .padding(12.dp)
             ) {
-                Text(text = destination.destinationName)
+                Text(text = destination.name)
                 Spacer(modifier = Modifier.padding(5.dp))
                 Text(text = destination.description)
 

@@ -7,25 +7,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.ourtrip.app.components.ExpandableCardComponent
 import br.com.ourtrip.app.components.LoadingAnimation
-import br.com.ourtrip.app.model.Destination
-import br.com.ourtrip.app.repository.getAllDestinations
-import kotlinx.coroutines.async
+import br.com.ourtrip.app.model.DestinationViewModel
+import br.com.ourtrip.app.network.destinations.Destinations
 
 @Composable
-fun DestinationSearchScreen(navController: NavController) {
-    var destinations by remember { mutableStateOf<List<Destination>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(true) }
+fun DestinationSearchScreen(navController: NavController, viewModel: DestinationViewModel = viewModel()) {
+    val data by viewModel.data
+    val loading by viewModel.loading
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -33,16 +29,10 @@ fun DestinationSearchScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
 
-        LaunchedEffect(Unit) {
-            val destinationsResult = async { getAllDestinations() }
-            destinations = destinationsResult.await()
-            isLoading = false
-        }
-
-        if (isLoading) {
+        if (loading) {
             LoadingAnimation()
         } else {
-            DestinationList(destinations = destinations, navController = navController)
+            DestinationList(destinations = data, navController = navController)
         }
     }
 }
@@ -51,10 +41,11 @@ fun DestinationSearchScreen(navController: NavController) {
 fun DestinationList(
     modifier: Modifier = Modifier,
     navController: NavController,
-    destinations: List<Destination>
+    destinations: List<Destinations>
 ) {
     LazyColumn(modifier = modifier.padding(vertical = 4.dp, horizontal = 6.dp)) {
         items(items = destinations) { destinations ->
+            println(destinations)
             ExpandableCardComponent(destinations, navController)
         }
     }

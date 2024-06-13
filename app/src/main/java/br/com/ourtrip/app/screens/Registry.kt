@@ -21,10 +21,11 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
@@ -35,9 +36,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.ourtrip.app.R
+import br.com.ourtrip.app.components.LoadingAnimation
 import br.com.ourtrip.app.components.PasswordInputComponent
+import br.com.ourtrip.app.model.UserViewModel
 import br.com.ourtrip.app.ui.theme.QuickSand
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -46,7 +50,11 @@ import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistryScreen(navController: NavController) {
+fun RegistryScreen(navController: NavController, viewModel: UserViewModel = viewModel()) {
+    val response by viewModel.response
+    val loading by viewModel.loading
+
+
     var fullName by remember {
         mutableStateOf("")
     }
@@ -56,9 +64,7 @@ fun RegistryScreen(navController: NavController) {
     var password by remember {
         mutableStateOf("")
     }
-    var confirmPassword by remember {
-        mutableStateOf("")
-    }
+
     Box() {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -186,12 +192,14 @@ fun RegistryScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        PasswordInputComponent(placeholder = "Senha", value = confirmPassword, updateValue = { confirmPassword = it })
 
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Button(
-                            onClick = {navController.navigate("Login")},
+                            onClick = {
+                                viewModel.createUser(name= fullName, email, password)
+
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp),
@@ -205,6 +213,16 @@ fun RegistryScreen(navController: NavController) {
                                 color = Color.White,
                                 fontSize = 23.sp
                             )
+                        }
+                        Spacer(modifier = Modifier.height(36.dp))
+                        if (loading) {
+                            LoadingAnimation()
+                        } else {
+                            response?.let {
+                                LaunchedEffect(it) {
+                                    navController.navigate("Login")
+                                }
+                            }
                         }
                     }
                 }
